@@ -1,7 +1,7 @@
 import base64
 import pickle
 import os.path
-from settings import user_id, scopes
+from settings import user_id, scopes, items_start, items_end
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -62,8 +62,9 @@ for message in messages:
     body = GetMessage(service, user_id, message.get("id"))
     message = base64.b64decode([part["body"]["data"] for part in body["payload"]["parts"] if part["mimeType"] == "text/plain"][0]).decode("utf-8")
     message_split = message.split("\r\n")
-    message_split =  message_split[message_split.index("Action Items:"): message_split.index("Regards,")]
+    message_split =  message_split[message_split.index(items_start): message_split.index(items_end)]
     list_id = create_list(create_board("12.02.2019"), "Action Items")
     for msg in message_split[1:-1]:
-        create_card(list_id, msg)
+        if msg.strip() != "":
+            create_card(list_id, msg)
     break
