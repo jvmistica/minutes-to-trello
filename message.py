@@ -1,7 +1,7 @@
 import base64
 import pickle
 import os.path
-from settings import user_id, scopes, items_start, items_end
+from settings import user_id, scopes, subject, items_start, items_end
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
@@ -30,7 +30,7 @@ service = build("gmail", "v1", credentials=creds)
 
 
 ############################################################################################
-def ListMessagesMatchingQuery(service, user_id, query=""):
+def ListMessagesMatchingQuery(service, user_id, query=f"subject: {subject}"):
     try:
         response = service.users().messages().list(userId=user_id,
                                                q=query).execute()
@@ -60,10 +60,11 @@ from trello import create_board, create_list, create_card
 
 for message in messages:
     body = GetMessage(service, user_id, message.get("id"))
+    subject = next(header["value"] for header in body["payload"]["headers"] if header["name"] == "Subject")
     message = base64.b64decode([part["body"]["data"] for part in body["payload"]["parts"] if part["mimeType"] == "text/plain"][0]).decode("utf-8")
     message_split = message.split("\r\n")
     message_split =  message_split[message_split.index(items_start): message_split.index(items_end)]
-    list_id = create_list(create_board("12.02.2019"), "Action Items")
+    list_id = create_list(create_board(subject), "Action Items")
     for msg in message_split[1:-1]:
         if msg.strip() != "":
             create_card(list_id, msg)
