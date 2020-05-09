@@ -1,7 +1,7 @@
-user_id = "user_id"
+email_address = "email_address"
 scopes = ["https://www.googleapis.com/auth/gmail.readonly"]
 key = "key"
 token = "token"
-subject = "Minutes Of The Meeting"
+subject = "Minutes of the Meeting"
 items_start = "Action Items:"
 items_end = "Regards,"

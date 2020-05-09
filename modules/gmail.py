@@ -7,8 +7,8 @@ from apiclient import errors
 
 def create_access_token():
     creds = None
-    if os.path.exists("token.pickle"):
-        with open("token.pickle", "rb") as token:
+    if os.path.exists("modules/token.pickle"):
+        with open("modules/token.pickle", "rb") as token:
             creds = pickle.load(token)
     return creds
 
@@ -19,10 +19,10 @@ def generate_service(creds, scopes):
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                "credentials.json", scopes)
+                "modules/credentials.json", scopes)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open("token.pickle", "wb") as token:
+        with open("modules/token.pickle", "wb") as token:
             pickle.dump(creds, token)
 
 
