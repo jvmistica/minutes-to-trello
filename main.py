@@ -2,7 +2,7 @@ import base64
 from googleapiclient.discovery import build
 from modules.gmail import create_access_token, generate_service, query_messages, get_message
 from modules.trello import create_board, create_list, create_card
-from settings import user_id, scopes, subject, items_start, items_end
+from settings import email_address, scopes, subject, items_start, items_end
 
 
 creds = create_access_token()
