@@ -8,10 +8,10 @@ from settings import email_address, scopes, subject, items_start, items_end
 creds = create_access_token()
 generate_service(creds, scopes)
 service = build("gmail", "v1", credentials=creds)
-messages = query_messages(service, user_id, subject)
+messages = query_messages(service, email_address, subject)
 
 for message in messages:
-    body = get_message(service, user_id, message.get("id"))
+    body = get_message(service, email_address, message.get("id"))
     subject = next(header["value"] for header in body["payload"]["headers"] \
                    if header["name"] == "Subject")
     message = base64.b64decode([part["body"]["data"] for part in body["payload"]["parts"] \
