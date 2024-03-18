@@ -6,6 +6,12 @@ from apiclient import errors
 
 
 def create_access_token():
+    """
+    Creates an access token.
+
+    :returns: creds
+    """
+
     creds = None
     if os.path.exists("modules/token.pickle"):
         with open("modules/token.pickle", "rb") as token:
@@ -14,6 +20,13 @@ def create_access_token():
 
 
 def generate_service(creds, scopes):
+    """
+    Generates a service.
+
+    :param creds:
+    :param scopes:
+    """
+
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -27,6 +40,15 @@ def generate_service(creds, scopes):
 
 
 def query_messages(service, user_id, subject):
+    """
+    Queries Gmail messages that matches the provided subject.
+
+    :param service:
+    :param user_id:
+    :param subject:
+    :returns: messages
+    """
+
     try:
         query = f"subject: {subject}"
         response = service.users().messages().list(userId=user_id, q=query).execute()
@@ -44,6 +66,15 @@ def query_messages(service, user_id, subject):
 
 
 def get_message(service, user_id, msg_id):
+    """
+    Retrieves the content of the message.
+
+    :param service:
+    :param user_id:
+    :param msg_id:
+    :returns: message
+    """
+
     try:
         message = service.users().messages().get(userId=user_id, id=msg_id).execute()
         return message
