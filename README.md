@@ -1,4 +1,6 @@
 # Minutes to Trello
+![Build status](https://github.com/jvmistica/minutes-to-trello/actions/workflows/python-app.yml/badge.svg)
+
 Reads minutes of the meeting emails from Gmail, retrieves the action items, and uploads them to Trello.
 
 ## Getting Started
